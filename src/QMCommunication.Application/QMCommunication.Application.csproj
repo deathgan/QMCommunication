@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>QMCommunication</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QMCommunication.Domain\QMCommunication.Domain.csproj" />
+    <ProjectReference Include="..\QMCommunication.Application.Contracts\QMCommunication.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flurl.Http" Version="3.2.4" />
+    <PackageReference Include="FreeSql" Version="3.2.689" />
+    <PackageReference Include="FreeSql.Provider.SqlServer" Version="3.2.689" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Application" Version="4.3.3" />
+  </ItemGroup>
+
+</Project>
