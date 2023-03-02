@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using QMCommunication.Enums;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace QMCommunication.QMPalabelCasecode
 {
@@ -42,7 +43,8 @@ namespace QMCommunication.QMPalabelCasecode
             _freeSql = freeSql;
         }
 
-        // [Authorize(QMCommunicationPermissions.PalabelCasecode.Default)]
+        //  [Authorize(QMCommunicationPermissions.PalabelCasecode.Default)]
+        [Route("PalabelCasecode/PalabelCasecodeSearchAndBatchCreate")]
         public async Task<ServiceResult<bool>> PalabelCasecodeSearchAndBatchCreate(PalabelCasecodeSearchAndBatchCreateDto input)
         {
             ServiceResult<bool> serviceResult = new Base.ServiceResult<bool>();
