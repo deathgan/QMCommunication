@@ -11,21 +11,12 @@
 @section scripts {
     <abp-script src="/Pages/Index.js" />
 }
+
 <div class="container">
-    <div class="p-5 text-center">
-
-        @if (!CurrentUser.IsAuthenticated)
-        {
-<a abp-button="Primary" href="~/Account/Login"><i class="fa fa-sign-in"></i> @L["Login"]</a>}
-
-    </div>
-
-
+    <img src="~/libs/Resource/welcome.gif" style="width:inherit" />
     <div class="mb-5 text-center">
-        <p class="align-middle">
-            <a href="https://twitter.com/abpframework" target="_blank" class="mx-2"><i class="fa fa-twitter"></i><span class="text-secondary"> Abp Framework</span></a>
-            <a href="https://twitter.com/abpcommercial" target="_blank" class="mx-2"><i class="fa fa-twitter"></i><span class="text-secondary"> Abp Commercial</span></a>
-            <a href="https://github.com/abpframework/abp" target="_blank" class="mx-2"><i class="fa fa-github"></i><span class="text-secondary"> abpframework</span></a>
-        </p>
+        <a href="https://twitter.com/abpframework" target="_blank" class="mx-2"><i class="fa fa-twitter"></i><span class="text-secondary"> Abp Framework</span></a>
+        <a href="https://twitter.com/abpcommercial" target="_blank" class="mx-2"><i class="fa fa-twitter"></i><span class="text-secondary"> Abp Commercial</span></a>
+        <a href="https://github.com/abpframework/abp" target="_blank" class="mx-2"><i class="fa fa-github"></i><span class="text-secondary"> abpframework</span></a>
     </div>
 </div>

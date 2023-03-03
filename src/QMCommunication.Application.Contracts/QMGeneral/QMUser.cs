@@ -3,6 +3,7 @@ using java.security;
 using java.security.spec;
 using javax.crypto;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,20 +14,42 @@ namespace QMCommunication.QMGeneral
         public string username { get; set; }
         public string password { get; set; }
 
+        private static IConfiguration Configuration { get; set; }
 
-        public static QMUser EncryptPublicKey(string publicKey, string text, string userName)
+        public static string QMGetTokenUrl { get; private set; }
+        public static string QMUserName { get; private set; }
+        public static string QMPassword { get; private set; }
+        public static string QMPublicKey { get; private set; }
+
+        public static string QMPalabelCasecodeTotalQueryUrl { get; private set; }
+
+        public QMUser()
+        {
+        }
+        public QMUser(IConfiguration configuration)
+        {
+            Configuration = configuration;
+            QMGetTokenUrl = Configuration["App:QMGetTokenUrl"];
+            QMUserName = Configuration["App:QMUserName"];
+            QMPassword = Configuration["App:QMPassword"];
+            QMPublicKey = Configuration["App:QMPublicKey"];
+
+            QMPalabelCasecodeTotalQueryUrl = Configuration["App:QMPalabelCasecodeTotalQueryUrl"];
+        }
+
+        public static QMUser EncryptPublicKey()
         {
 
-            byte[] buffer = Convert.FromBase64String(publicKey);
+            byte[] buffer = Convert.FromBase64String(QMPublicKey);
 
             X509EncodedKeySpec x509EncodedlKeySpec2 = new X509EncodedKeySpec(buffer);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             java.security.PublicKey publickey = keyFactory.generatePublic(x509EncodedlKeySpec2);
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publickey);
-            byte[] result = cipher.doFinal(Encoding.UTF8.GetBytes(text));
+            byte[] result = cipher.doFinal(Encoding.UTF8.GetBytes(QMPassword));
 
-            return new QMUser { username = userName, password = Convert.ToBase64String(result) };
+            return new QMUser { username = QMUserName, password = Convert.ToBase64String(result) };
 
         }
 

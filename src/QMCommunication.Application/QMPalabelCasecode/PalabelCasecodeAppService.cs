@@ -43,7 +43,7 @@ namespace QMCommunication.QMPalabelCasecode
             _freeSql = freeSql;
         }
 
-        //  [Authorize(QMCommunicationPermissions.PalabelCasecode.Default)]
+        // [Authorize(QMCommunicationPermissions.PalabelCasecode.Default)]
         [Route("PalabelCasecode/PalabelCasecodeSearchAndBatchCreate")]
         public async Task<ServiceResult<bool>> PalabelCasecodeSearchAndBatchCreate(PalabelCasecodeSearchAndBatchCreateDto input)
         {
@@ -105,19 +105,14 @@ namespace QMCommunication.QMPalabelCasecode
 
                         Logger.LogError($"====错过条数{jsons.Msg}=====时间范围{display}======================");
 
-
-
                         startDate = startDate.AddMinutes(input.intervalMinutes);
 
                         continue;
                     }
 
-
-
                 }
                 catch (Exception e)
                 {
-
                     throw new Exception(e.Message);
                 }
 
@@ -145,18 +140,15 @@ namespace QMCommunication.QMPalabelCasecode
         private async Task<string> GetQMPalabelCasecodeTotalQueryUrl()
         {
 
-            string QMGetTokenUrl = _configuration["App:QMGetTokenUrl"];
-            string QMUserName = _configuration["App:QMUserName"];
-            string QMPassword = _configuration["App:QMPassword"];
-            string QMPublicKey = _configuration["App:QMPublicKey"];
+            QMUser qMUsers = new QMUser(_configuration);
 
-            QMUser qmuser = QMUser.EncryptPublicKey(QMPublicKey, QMPassword, QMUserName);
+            QMUser qmuser = QMUser.EncryptPublicKey();
 
-            QMGeneralResult tokenResult = await QMGetTokenUrl.PostJsonAsync(qmuser
+            QMGeneralResult tokenResult = await QMUser.QMGetTokenUrl.PostJsonAsync(qmuser
                 )
                  .ReceiveJson<QMGeneralResult>();
 
-            string QMPalabelCasecodeTotalQueryUrl = string.Format(_configuration["App:QMPalabelCasecodeTotalQueryUrl"], tokenResult.Token);
+            string QMPalabelCasecodeTotalQueryUrl = string.Format(QMUser.QMPalabelCasecodeTotalQueryUrl, tokenResult.Token);
 
             return QMPalabelCasecodeTotalQueryUrl;
 
