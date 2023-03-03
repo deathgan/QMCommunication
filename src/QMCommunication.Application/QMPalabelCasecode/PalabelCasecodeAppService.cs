@@ -50,12 +50,13 @@ namespace QMCommunication.QMPalabelCasecode
             ServiceResult<bool> serviceResult = new Base.ServiceResult<bool>();
             serviceResult.OperationSuccess(true);
 
+            QMUser qMUser = new QMUser(_configuration);
 
             DateTime startDate = Convert.ToDateTime(input.reqDateBegin);
             DateTime endDate = Convert.ToDateTime(input.reqDateEnd);
 
             //获取拼装好的请求地址
-            string QMPalabelCasecodeTotalQueryUrl = await GetQMPalabelCasecodeTotalQueryUrl();
+            string QMPalabelCasecodeTotalQueryUrl = await QMUser.GetQMPalabelCasecodeTotalQueryUrl();
 
             List<PalabelCasecodeDto> list = new List<PalabelCasecodeDto>();
 
@@ -94,7 +95,7 @@ namespace QMCommunication.QMPalabelCasecode
 
                     if (jsons.Code == EQMCode.Error && jsons.Msg.Contains("过期"))
                     {
-                        QMPalabelCasecodeTotalQueryUrl = await GetQMPalabelCasecodeTotalQueryUrl();
+                        QMPalabelCasecodeTotalQueryUrl = await QMUser.GetQMPalabelCasecodeTotalQueryUrl();
 
                         continue;
                     }
@@ -137,22 +138,7 @@ namespace QMCommunication.QMPalabelCasecode
 
 
 
-        private async Task<string> GetQMPalabelCasecodeTotalQueryUrl()
-        {
 
-            QMUser qMUsers = new QMUser(_configuration);
-
-            QMUser qmuser = QMUser.EncryptPublicKey();
-
-            QMGeneralResult tokenResult = await QMUser.QMGetTokenUrl.PostJsonAsync(qmuser
-                )
-                 .ReceiveJson<QMGeneralResult>();
-
-            string QMPalabelCasecodeTotalQueryUrl = string.Format(QMUser.QMPalabelCasecodeTotalQueryUrl, tokenResult.Token);
-
-            return QMPalabelCasecodeTotalQueryUrl;
-
-        }
 
     }
 }

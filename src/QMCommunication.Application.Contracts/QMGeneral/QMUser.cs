@@ -1,4 +1,5 @@
 ﻿using com.sun.tools.classfile;
+using Flurl.Http;
 using java.security;
 using java.security.spec;
 using javax.crypto;
@@ -7,6 +8,8 @@ using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+
 namespace QMCommunication.QMGeneral
 {
     public class QMUser
@@ -53,6 +56,21 @@ namespace QMCommunication.QMGeneral
 
         }
 
+
+        public static async Task<string> GetQMPalabelCasecodeTotalQueryUrl()
+        {
+
+            QMUser qmuser = QMUser.EncryptPublicKey();
+
+            QMGeneralResult tokenResult = await QMUser.QMGetTokenUrl.PostJsonAsync(qmuser
+                )
+                 .ReceiveJson<QMGeneralResult>();
+
+            string QMPalabelCasecodeTotalQueryUrl = string.Format(QMUser.QMPalabelCasecodeTotalQueryUrl, tokenResult.Token);
+
+            return QMPalabelCasecodeTotalQueryUrl;
+
+        }
 
     }
 }

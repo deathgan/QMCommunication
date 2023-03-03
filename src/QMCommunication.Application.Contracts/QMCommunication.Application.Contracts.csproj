@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Flurl.Http" Version="3.2.4" />
     <PackageReference Include="IKVM" Version="8.4.5" />
     <PackageReference Include="Volo.Abp.ObjectExtending" Version="4.3.3" />
     <PackageReference Include="Volo.Abp.Account.Application.Contracts" Version="4.3.3" />
