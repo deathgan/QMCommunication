@@ -56,7 +56,7 @@ namespace QMCommunication.QMPalabelCasecode
             DateTime endDate = Convert.ToDateTime(input.reqDateEnd);
 
             //获取拼装好的请求地址
-            string QMPalabelCasecodeTotalQueryUrl = await QMUser.GetQMPalabelCasecodeTotalQueryUrl();
+            string QMPalabelCasecodeTotalQueryUrl = await QMUser.GetFormatUrl(QMUser.QMPalabelCasecodeTotalQueryUrl);
 
             List<PalabelCasecodeDto> list = new List<PalabelCasecodeDto>();
 
@@ -95,7 +95,7 @@ namespace QMCommunication.QMPalabelCasecode
 
                     if (jsons.Code == EQMCode.Error && jsons.Msg.Contains("过期"))
                     {
-                        QMPalabelCasecodeTotalQueryUrl = await QMUser.GetQMPalabelCasecodeTotalQueryUrl();
+                        QMPalabelCasecodeTotalQueryUrl = await QMUser.GetFormatUrl(QMUser.QMPalabelCasecodeTotalQueryUrl);
 
                         continue;
                     }
@@ -118,6 +118,24 @@ namespace QMCommunication.QMPalabelCasecode
                 }
 
                 startDate = startDate.AddMinutes(input.intervalMinutes);
+
+                //两万条插入一次
+                if (list != null && list.Count >= 20000)
+                {
+                    list = list.Where(x =>
+                    {
+                        x.CreationTime = DateTime.Now;
+                        return true;
+
+                    }).ToList();
+                    await _freeSql.Insert(list).ExecuteSqlBulkCopyAsync();//插入
+
+                    list = new List<PalabelCasecodeDto>();
+
+                    Console.WriteLine("===================已插入两万条========================");
+
+                }
+
             }
 
             if (list != null)
@@ -135,6 +153,48 @@ namespace QMCommunication.QMPalabelCasecode
             return serviceResult;
         }
 
+
+
+        // [Authorize(QMCommunicationPermissions.PalabelCasecode.Default)]
+        [Route("PalabelCasecode/PalabelCasecodeGetTotalCount")]
+        public async Task<ServiceResult<int>> PalabelCasecodeGetTotalCount(PalabelCasecodeSearchAndBatchCreateDto input)
+        {
+            ServiceResult<int> serviceResult = new Base.ServiceResult<int>();
+            serviceResult.OperationSuccess(0);
+
+            QMUser qMUser = new QMUser(_configuration);
+
+            //获取拼装好的请求地址
+            string QMPalabelCasecodeTotalQueryNumUrl = await QMUser.GetFormatUrl(QMUser.QMPalabelCasecodeTotalQueryNumUrl);
+
+
+            try
+            {
+
+                QMGeneralResult jsons = await QMPalabelCasecodeTotalQueryNumUrl.PostJsonAsync(input).ReceiveJson<QMGeneralResult>();
+
+                if (jsons.Code == EQMCode.OK)
+                {
+                    serviceResult.Data = jsons.Data == null ? 0 : Convert.ToInt32(jsons.Data);
+
+                }
+
+                if (jsons.Code == EQMCode.Error && jsons.Msg.Contains("过期"))
+                {
+                    QMPalabelCasecodeTotalQueryNumUrl = await QMUser.GetFormatUrl(QMUser.QMPalabelCasecodeTotalQueryNumUrl);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+
+
+            return serviceResult;
+        }
 
 
 

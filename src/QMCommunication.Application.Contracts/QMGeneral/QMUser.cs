@@ -26,6 +26,8 @@ namespace QMCommunication.QMGeneral
 
         public static string QMPalabelCasecodeTotalQueryUrl { get; private set; }
 
+        public static string QMPalabelCasecodeTotalQueryNumUrl { get; private set; }
+
         public QMUser()
         {
         }
@@ -38,6 +40,8 @@ namespace QMCommunication.QMGeneral
             QMPublicKey = Configuration["App:QMPublicKey"];
 
             QMPalabelCasecodeTotalQueryUrl = Configuration["App:QMPalabelCasecodeTotalQueryUrl"];
+
+            QMPalabelCasecodeTotalQueryNumUrl = Configuration["App:QMPalabelCasecodeTotalQueryNumUrl"];
         }
 
         public static QMUser EncryptPublicKey()
@@ -57,7 +61,7 @@ namespace QMCommunication.QMGeneral
         }
 
 
-        public static async Task<string> GetQMPalabelCasecodeTotalQueryUrl()
+        public static async Task<string> GetFormatUrl(string url)
         {
 
             QMUser qmuser = QMUser.EncryptPublicKey();
@@ -66,9 +70,8 @@ namespace QMCommunication.QMGeneral
                 )
                  .ReceiveJson<QMGeneralResult>();
 
-            string QMPalabelCasecodeTotalQueryUrl = string.Format(QMUser.QMPalabelCasecodeTotalQueryUrl, tokenResult.Token);
+            return string.Format(url, tokenResult.Token);
 
-            return QMPalabelCasecodeTotalQueryUrl;
 
         }
 

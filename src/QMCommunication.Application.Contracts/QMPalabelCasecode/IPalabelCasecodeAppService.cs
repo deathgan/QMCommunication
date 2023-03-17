@@ -22,5 +22,13 @@ namespace QMCommunication.QMPalabelCasecode
         /// <param name="input"></param>
         /// <returns></returns>
         Task<ServiceResult<bool>> PalabelCasecodeSearchAndBatchCreate(PalabelCasecodeSearchAndBatchCreateDto input);
+
+        /// <summary>
+        /// 获取总条数
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<ServiceResult<int>> PalabelCasecodeGetTotalCount(PalabelCasecodeSearchAndBatchCreateDto input);
+
     }
 }
